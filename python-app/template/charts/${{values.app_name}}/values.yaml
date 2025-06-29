@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: arjun150800/python-app
+  repository: arjun150800/${{values.app_name}}
   pullPolicy: IfNotPresent
   tag: ${{values.app_name}}-${{values.app_env}}-latest
 imagePullSecrets: []
