@@ -41,7 +41,7 @@ jobs:
         name: Modify values file
         shell: bash
         run: |
-          echo {{ '${{needs.ci.outputs.commit_id}}' }}
+          echo ${{ '${{needs.ci.outputs.commit_id}}' }}
           pip install yq
           yq -Yi '.image.tag = "${{ '${{needs.ci.outputs.commit_id}}' }}"' charts/${{values.app_name}}/values-${{values.app_env}}.yaml
       -
@@ -65,5 +65,5 @@ jobs:
             --insecure\
             --grpc-web\
             --username admin \
-            --password ${{ secrets.ARGOCD_PASSWORD }}
+            --password  ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
           argocd app sync ${{values.app_name}}
