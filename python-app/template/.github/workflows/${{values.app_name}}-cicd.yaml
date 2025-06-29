@@ -27,9 +27,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: arjun150800/${{values.app_name}}:$ {{ '${{ env.COMMIT_ID }}' }}
+          tags: arjun150800/${{values.app_name}}:${{ '${{ env.COMMIT_ID }}' }}
     outputs:
-      commit_id: ${{'${{env.COMMIT_ID}}' }}
+      commit_id: ${{ '${{ env.COMMIT_ID }}' }}
 
   cd:
     needs: ci
