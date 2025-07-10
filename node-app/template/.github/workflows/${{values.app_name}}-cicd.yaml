@@ -1,0 +1,61 @@
+name: ${{values.app_name}}-cicd
+
+on:
+  push:
+    paths:
+      - src/**
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Declare some variables
+        shell: bash
+        run: |
+          echo "COMMIT_ID=${GITHUB_SHA::6}" >> "$GITHUB_ENV"
+      -
+        name: Login to Docker Hub
+        uses:  docker/login-action@v3
+        with:
+          username: ${{ '${{ secrets.DOCKERHUB_USERNAME }}' }}
+          password: ${{ '${{ secrets.DOCKERHUB_TOKEN }}' }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: arjun150800/${{values.app_name}}:${{ '${{ env.COMMIT_ID }}' }}
+    outputs:
+      commit_id: ${{ '${{ env.COMMIT_ID }}' }}
+
+  cd:
+    needs: ci
+    runs-on: self-hosted
+    steps:
+      -
+        uses: actions/checkout@v3
+      -
+        name: Modify values file
+        shell: pwsh
+        run: |
+          pip install yq
+          $commitId = '${{ needs.ci.outputs.commit_id }}'
+          yq -Yi ".image.tag = '$commitId'" charts/${{values.app_name}}/values-${{values.app_env}}.yaml
+      -
+        name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Updates values.yaml with commit ${{'${{needs.ci.outputs.commit_id}}' }}'
+
+      -
+        name: Deploy using Helm
+        shell: pwsh
+        run: |
+          helm upgrade --install `
+            ${{ values.app_name }} charts/${{ values.app_name }} `
+            --namespace ${{ values.app_env }}`
+            --create-namespace `
+            -f charts/${{ values.app_name }}/values-${{ values.app_env }}.yaml
