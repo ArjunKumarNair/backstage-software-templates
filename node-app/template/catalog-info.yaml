@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{values.app_name}}
+  description: Node app named ${{values.app_name}}
+  annotations:
+    github.com/project-slug: arjun-mindsprint-udemy/${{values.app_name}}
+spec:
+  type: service
+  owner: development
+  lifecycle: experimental
