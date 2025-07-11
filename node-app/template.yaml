@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: node-template
-  title: Node template
+  name: nodejs-devsecops-template
+  title: Node Devsecops template
   description: Provisions a minimalistic node application
 spec:
   owner: development
