@@ -39,11 +39,11 @@ jobs:
         uses: actions/checkout@v3
       -
         name: Modify values file
-        shell: powershell
+        shell: bash
         run: |
+          echo ${{ '${{needs.ci.outputs.commit_id}}' }}
           pip install yq
-          $commitId = '${{needs.ci.outputs.commit_id}}'
-          yq -Yi .image.tag = $commitId charts/${{values.app_name}}/values-${{values.app_env}}.yaml
+          yq -Yi '.image.tag = "${{ '${{needs.ci.outputs.commit_id}}' }}"' charts/${{values.app_name}}/values-${{values.app_env}}.yaml
       -
         name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -52,10 +52,10 @@ jobs:
 
       -
         name: Deploy using Helm
-        shell: powershell
+        shell: bash
         run: |
-          helm upgrade --install `
-            ${{ values.app_name }} charts/${{ values.app_name }} `
-            --namespace ${{ values.app_env }}`
-            --create-namespace `
+          helm upgrade --install \
+            ${{ values.app_name }} charts/${{ values.app_name }} \
+            --namespace ${{ values.app_env }} \
+            --create-namespace \
             -f charts/${{ values.app_name }}/values-${{ values.app_env }}.yaml
