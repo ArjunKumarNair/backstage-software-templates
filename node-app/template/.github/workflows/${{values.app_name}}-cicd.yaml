@@ -57,7 +57,7 @@ jobs:
         run: |
           helm upgrade --install \
             ${{ values.app_name }} charts/${{ values.app_name }} \
-            --set image.tag=${{'${{needs.ci.outputs.commit_id}}' }}
+            --set image.tag=${{'${{needs.ci.outputs.commit_id}}' }} \
             --namespace ${{ values.app_env }} \
             --create-namespace \
             -f charts/${{ values.app_name }}/values-${{ values.app_env }}.yaml
