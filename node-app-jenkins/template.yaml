@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: nodejs-devsecops-template-github-actions
-  title: Node Devsecops template (Github Actions)
+  name: nodejs-devsecops-template-jenkins
+  title: Node Devsecops template (Jenkins)
   description: Provisions a minimalistic node application
 spec:
   owner: development
@@ -45,6 +45,14 @@ spec:
         repoUrl: github.com?owner=arjun-mindsprint-udemy&repo=${{parameters.component_id}}
         protectDefaultBranch: false
         repoVisibility: public
+
+    - id: jenkins-job-create
+      name: Jenkins Job Create
+      action: jenkins:job:create
+      input:
+        jobName: ${{ parameters.projectName }}
+        folderName: ${{ parameters.folderName }}
+        configPath: "./template/config.xml"
 
     - id: register
       name: Register
