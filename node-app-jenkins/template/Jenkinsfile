@@ -7,8 +7,8 @@ pipeline {
         DOCKERHUB_USERNAME = credentials('DOCKERHUB_USERNAME_ARJUN')
         DOCKERHUB_TOKEN = credentials('DOCKERHUB_TOKEN_ARJUN')
         COMMIT_ID = "${env.GIT_COMMIT.take(6)}"
-        APP_NAME = '{{ values.app_name }}'
-        APP_ENV = '{{ values.app_env }}'
+        APP_NAME = '${{ values.app_name }}'
+        APP_ENV = '${{ values.app_env }}'
     }
 
     stages {

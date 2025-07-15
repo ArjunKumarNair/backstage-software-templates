@@ -13,6 +13,7 @@ spec:
       required:
         - component_id
         - environment
+        - folderName
       properties:
         component_id:
           title: Component name
@@ -26,6 +27,10 @@ spec:
           enum:
             - dev
             - prod
+        folderName:
+          title: Folder name
+          type: string
+          description: Provide the folder name in Jenkins
 
   steps:
     - id: fetch-base
@@ -50,7 +55,7 @@ spec:
       name: Jenkins Job Create
       action: jenkins:job:create
       input:
-        jobName: ${{ parameters.projectName }}
+        jobName: ${{ parameters.component_id }}
         folderName: ${{ parameters.folderName }}
         configPath: "./template/config.xml"
 
