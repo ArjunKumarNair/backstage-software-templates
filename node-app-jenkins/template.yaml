@@ -57,7 +57,7 @@ spec:
       input:
         jobName: ${{ parameters.component_id }}
         folderName: ${{ parameters.folderName }}
-        configPath: "./config.xml"
+        configPath: "/config.xml"
 
     - id: register
       name: Register
