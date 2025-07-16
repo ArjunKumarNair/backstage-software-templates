@@ -109,16 +109,32 @@ pipeline {
         stage('Post-deployment Health Check') {
             steps {
                 script {
-                def app_name = env.APP_NAME
-                def app_env = env.APP_ENV
+                    def app_name = env.APP_NAME
+                    def app_env = env.APP_ENV
 
-                bat """
-                echo Starting port-forward in background...
-                start /B wsl kubectl port-forward svc/${app_name} -n ${app_env} 8080:5000
-                timeout /t 10 >nul
-                echo Checking /health endpoint...
-                powershell -Command "(Invoke-WebRequest -Uri http://localhost:8080/health).Content"
-                """
+                    // Start port-forward in background
+                    bat """
+                    echo Starting port-forward in background...
+                    start /B wsl kubectl port-forward svc/${app_name} -n ${app_env} 8080:5000
+                    """
+
+                    // Wait for pod to be ready
+                    bat "timeout /t 10 >nul"
+
+                    // Health check using PowerShell
+                    powershell '''
+                    try {
+                    $response = Invoke-WebRequest -Uri http://localhost:8080/health -UseBasicParsing
+                    Write-Host "Health check status: $($response.StatusCode)"
+                    Write-Host "Health response: $($response.Content)"
+                    if ($response.StatusCode -ne 200) {
+                    throw "Unhealthy status code"
+                    }
+                    } catch {
+                    Write-Error "Health check failed: $_"
+                    exit 1
+                    }
+                    '''
                 }
             }
         }
