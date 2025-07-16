@@ -106,18 +106,24 @@ pipeline {
             }
         }
 
-        stage ('Post-deployment Health Check') {
+        stage('Post-deployment Health Check') {
             steps {
                 script {
-                    bat'''
-                        echo Waiting for pod to be ready...
-                        timeout /t 10
-                        echo Checking /health endpoint
-                        curl http://localhost:8080/health
-                    '''
+                def app_name = env.APP_NAME
+                def app_env = env.APP_ENV
+
+                bat """
+                echo Starting port-forward in background...
+                start /B kubectl port-forward svc/${app_name} -n ${app_env} 8080:5000
+                timeout /t 10 >nul
+                echo Checking /health endpoint...
+                powershell -Command "(Invoke-WebRequest -Uri http://localhost:8080/health).Content"
+                """
                 }
             }
         }
+
+
 
         stage('Set Build Info') {
             steps {
