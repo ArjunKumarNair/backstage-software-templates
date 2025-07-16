@@ -118,7 +118,7 @@ pipeline {
 
     post {
         always {
-            bat 'docker logout'
+            echo 'Jenkins Pipeline Complete'
         }
     }
 }
