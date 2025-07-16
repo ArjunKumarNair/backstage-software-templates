@@ -5,6 +5,8 @@ const promClient = require('prom-client');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
+require('dotenv').config();
+
 const app = express();
 const port = process.env.PORT || 5000
 
@@ -43,7 +45,7 @@ app.get('/readiness', (req, res) => {
 
 app.get('/devsecops-info', (req, res) => {
     res.json({
-        appName: 'Node.js Demo App',
+        appName: process.env.APP_NAME,
         environment: process.env.NODE_ENV || 'development',
         build: {
             commitId: process.env.COMMIT_ID || 'unknown',
@@ -69,7 +71,7 @@ app.get('/devsecops-info', (req, res) => {
         monitoring: {
             prometheusEndpoint: '/metrics',
             grafanaDashboards: [
-                'http://localhost:3000/d/abc123/performance'
+                'http://localhost:3001'
             ]
         },
         swaggerDocs: '/swagger'
