@@ -114,7 +114,7 @@ pipeline {
 
                 bat """
                 echo Starting port-forward in background...
-                start /B kubectl port-forward svc/${app_name} -n ${app_env} 8080:5000
+                start /B wsl kubectl port-forward svc/${app_name} -n ${app_env} 8080:5000
                 timeout /t 10 >nul
                 echo Checking /health endpoint...
                 powershell -Command "(Invoke-WebRequest -Uri http://localhost:8080/health).Content"
