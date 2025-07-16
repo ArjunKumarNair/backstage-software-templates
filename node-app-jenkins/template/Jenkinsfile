@@ -27,6 +27,17 @@ pipeline {
             }
         }
 
+        stage('Trivy Filesystem Scan') {
+            steps {
+                script {
+                    bat '''
+                        echo Running Trivy Filesystem Scan...
+                        docker run --rm -v %CD%:/app aquasec/trivy:latest fs /app
+                    '''
+                }
+            }
+        }
+
         stage('Login to Docker Hub') {
             steps {
                 bat '''
@@ -57,6 +68,17 @@ pipeline {
             }
         }
 
+        stage('Trivy Image Scan') {
+            steps {
+                script {
+                    bat '''
+                        echo Scanning built Docker image with Trivy...
+                        docker run --rm aquasec/trivy:latest image arjun150800/%APP_NAME%:%COMMIT_ID%
+                    '''
+                }
+            }
+        }
+
         stage('Deploy with Helm') {
             steps {
                 script {
@@ -66,6 +88,19 @@ pipeline {
                     bat """
                         wsl helm upgrade --install ${app_name} ./charts/${app_name} -n ${app_env} --create-namespace --set image.tag=${commitId}
                     """
+                }
+            }
+        }
+
+        stage ('Post-deployment Health Check') {
+            steps {
+                script {
+                    bat'''
+                        echo Waiting for pod to be ready...
+                        timeout /t 10
+                        echo Checking /health endpoint
+                        curl http://localhost:8080/health
+                    '''
                 }
             }
         }
