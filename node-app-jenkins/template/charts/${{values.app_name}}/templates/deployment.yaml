@@ -13,6 +13,9 @@ spec:
       {{- include "node-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      prometheus.io/scrape: "true"
+      prometheus.io/path: "/metrics"
+      prometheus.io/port: "5000"
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}

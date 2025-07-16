@@ -16,6 +16,16 @@ jobs:
         shell: bash
         run: |
           echo "COMMIT_ID=${GITHUB_SHA::6}" >> "$GITHUB_ENV"
+      
+      -
+        name: Install Trivy
+        run: |
+          sudo apt-get update && apt-get install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.51.1_Linux-64bit.deb
+          sudo dpkg -i trivy_0.51.1_Linux-64bit.deb
+      -
+        name: Trivy scan (File System)
+        run: trivy fs . --exit-code 1 --severity HIGH, CRITICAL
       -
         name: Login to Docker Hub
         uses:  docker/login-action@v3
