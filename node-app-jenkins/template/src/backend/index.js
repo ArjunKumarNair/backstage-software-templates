@@ -24,7 +24,7 @@ const requestCounter = new promClient.Counter({
 
 // Middleware to count requests
 app.use((req, res, next) => {
-    requestCounter.inc({ method: req.method, route: req.path, status: res.statusCode});
+    requestCounter.inc({ method: req.method, route: req.path, status: res.statusCode });
     next();
 })
 
@@ -38,16 +38,44 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/readiness', (req, res) => {
-    res.json({ ready: true});
+    res.json({ ready: true });
 });
 
 app.get('/devsecops-info', (req, res) => {
     res.json({
-        platform: 'Demo DevSecOps Automation',
-        tools: ['Prometheus', 'Grafana', 'Trivy', 'Swagger'],
+        appName: 'Node.js Demo App',
         environment: process.env.NODE_ENV || 'development',
+        build: {
+            commitId: process.env.COMMIT_ID || 'unknown',
+            buildTime: process.env.BUILD_TIME || new Date().toISOString(),
+            ciSystem: 'Jenkins',
+        },
+        securityScans: {
+            trivy: {
+                lastRun: process.env.TRIVY_LAST_RUN || null,
+                vulnerabilitiesFound: Number(process.env.TRIVY_VULNS || 0),
+                status: process.env.TRIVY_STATUS || 'unknown'
+            },
+            sonarqube: {
+                lastRun: process.env.SONAR_LAST_RUN || null,
+                qualityGate: process.env.SONAR_GATE || 'unknown'
+            },
+            zap: {
+                lastRun: process.env.ZAP_LAST_RUN || null,
+                alerts: Number(process.env.ZAP_ALERTS || 0),
+                status: process.env.ZAP_STATUS || 'not available'
+            }
+        },
+        monitoring: {
+            prometheusEndpoint: '/metrics',
+            grafanaDashboards: [
+                'http://localhost:3000/d/abc123/performance'
+            ]
+        },
+        swaggerDocs: '/swagger'
     });
 });
+
 
 // Prometheus metrics endpoint
 app.get('/metrics', async (req, res) => {
