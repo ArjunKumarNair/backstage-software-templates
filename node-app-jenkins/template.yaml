@@ -51,14 +51,6 @@ spec:
         protectDefaultBranch: false
         repoVisibility: public
 
-    - id: jenkins-job-create
-      name: Jenkins Job Create
-      action: jenkins:job:create
-      input:
-        jobName: ${{ parameters.component_id }}
-        folderName: ${{ parameters.folderName }}
-        configPath: ./template/config.xml
-
     - id: register
       name: Register
       action: catalog:register
