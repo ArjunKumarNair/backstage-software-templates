@@ -3,6 +3,12 @@ pipeline {
         label 'windows-arjun'
     }
 
+    parameters {
+        booleanParam(name: 'ENABLE_TRIVY', defaultValue: true, description: 'Enable Trivy Scan')
+        booleanParam(name: 'ENABLE_SONARQUBE', defaultValue: true, description: 'Enable SonarQube Scan')
+        booleanParam(name: 'ENABLE_ZAP', defaultValue: false, description: 'Enable ZAP DAST Scan')
+    }
+
     environment {
         DOCKERHUB_USERNAME = credentials('DOCKERHUB_USERNAME_ARJUN')
         DOCKERHUB_TOKEN = credentials('DOCKERHUB_TOKEN_ARJUN')
@@ -30,6 +36,9 @@ pipeline {
         }
 
         stage('SonarQube Scan') {
+            when {
+                expression {return params.ENABLE_SONARQUBE}
+            }
             steps {
                 withSonarQubeEnv('SonarQube') {
                     script{
@@ -67,6 +76,9 @@ pipeline {
         }
 
         stage('Trivy Filesystem Scan') {
+            when {
+                expression {return params.ENABLE_TRIVY}
+            }
             steps {
                 script {
                     bat '''
@@ -100,6 +112,9 @@ pipeline {
         }
 
         stage('Trivy Image Scan') {
+            when {
+                expression {return params.ENABLE_TRIVY}
+            }
             steps {
                 script {
                     def trivyStatus = bat(script: 'trivy image arjun150800/%APP_NAME%:%COMMIT_ID%', returnStatus: true)
@@ -120,16 +135,12 @@ pipeline {
             }
         }
 
-        stage('Post-deployment Health Check & ZAP DAST Scan') {
+        stage('Post-deployment Health Check') {
             steps {
                 script {
                 def app_name = env.APP_NAME
                 def app_env = env.APP_ENV
-                def target = 'http://host.docker.internal:8080'
-                def reportPath = 'scan-report.html'
 
-                
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE'){   
                 powershell '''
                 Write-Host "Starting port forward..." 
                 $portForward = Start-Process -FilePath "wsl" `
@@ -147,7 +158,31 @@ pipeline {
                     Stop-Process -Id $portForward.Id -Force
                     exit 1
                 }
+                '''
+                }
+            }
+    }
+        stage('ZAP DAST Scan') {
+            when {
+                expression {return params.ENABLE_ZAP}
+            }
+            steps {
+                script {
+                def app_name = env.APP_NAME
+                def app_env = env.APP_ENV
+                def target = 'http://host.docker.internal:8080'
+                def reportPath = 'scan-report.html'
 
+                
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE'){   
+                powershell '''
+                Write-Host "Starting port forward..." 
+                $portForward = Start-Process -FilePath "wsl" `
+                    -ArgumentList "kubectl", "port-forward", "svc/$app_name", "-n", "$app_env", "8080:5000" `
+                    -NoNewWindow -PassThru
+    
+                Start-Sleep -Seconds 10
+    
                 Write-Host "Running OWASP ZAP DAST scan..."
                 try {
                     docker run --rm -v "$($PWD.Path):/zap/wrk/:rw" zaproxy/zap-stable zap-baseline.py -t http://host.docker.internal:8080 -r scan-report.html

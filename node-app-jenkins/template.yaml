@@ -13,7 +13,6 @@ spec:
       required:
         - component_id
         - environment
-        - folderName
       properties:
         component_id:
           title: Component name
@@ -28,9 +27,21 @@ spec:
             - dev
             - prod
         folderName:
-          title: Folder name
+          title: Jenkins Folder name
           type: string
           description: Provide the folder name in Jenkins
+        enableTrivy:
+          title: Enable Trivy Scan
+          type: boolean
+          default: true
+        enableSonarQube:
+          title: Enable SonarQube Scan
+          type: boolean
+          default: true
+        enableZAP:
+          title: Enable ZAP DAST Scan
+          type: boolean
+          default: true
 
   steps:
     - id: fetch-base
@@ -41,7 +52,11 @@ spec:
         values:
           app_name: ${{parameters.component_id}}
           app_env: ${{parameters.environment}}
-
+          jenkins_folder: ${{parameters.environment}}
+          enable_trivy: ${{parameters.enableTrivy}}
+          enable_sonarqube: ${{parameters.enableSonarQube}}
+          enable_zap: ${{parameters.enableZAP}}
+          
     - id: publish
       name: Publish
       action: publish:github
