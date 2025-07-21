@@ -11,3 +11,5 @@ spec:
   type: service
   owner: development
   lifecycle: experimental
+  providesApis:
+    - ${{values.app_name}}-api
