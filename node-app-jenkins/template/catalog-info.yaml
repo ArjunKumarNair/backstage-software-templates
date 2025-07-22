@@ -12,12 +12,12 @@ spec:
   owner: development
   lifecycle: experimental
   dependsOn:
-    - component: data-prep-module
-    - component: embedding-module
-    - component: llm-module
-    - component: rerank-module
-    - component: retrieval-module
-    - component: vectordb-module
+    - component: default/data-prep-module
+    - component: default/embedding-module
+    - component: default/llm-module
+    - component: default/rerank-module
+    - component: default/retrieval-module
+    - component: default/vectordb-module
 
   providesApis:
     - ${{values.app_name}}-api
