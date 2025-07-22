@@ -11,13 +11,5 @@ spec:
   type: service
   owner: development
   lifecycle: experimental
-  dependsOn:
-    - component: default/data-prep-module
-    - component: default/embedding-module
-    - component: default/llm-module
-    - component: default/rerank-module
-    - component: default/retrieval-module
-    - component: default/vectordb-module
-
   providesApis:
     - ${{values.app_name}}-api
