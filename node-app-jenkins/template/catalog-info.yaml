@@ -11,5 +11,13 @@ spec:
   type: service
   owner: development
   lifecycle: experimental
+  dependsOn:
+    - component: data-prep-module
+    - component: embedding-module
+    - component: llm-module
+    - component: rerank-module
+    - component: retrieval-module
+    - component: vectordb-module
+
   providesApis:
     - ${{values.app_name}}-api

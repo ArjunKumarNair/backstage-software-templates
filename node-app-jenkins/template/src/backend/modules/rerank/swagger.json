@@ -1,0 +1,19 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "rerank-module API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/embedding": {
+            "post": {
+                "summary": "Reranks vectors in vectorDB",
+                "responses": {
+                    "200": {
+                        "description": "Returns reranked vectors"
+                    }
+                }
+            }
+        }
+    }
+}

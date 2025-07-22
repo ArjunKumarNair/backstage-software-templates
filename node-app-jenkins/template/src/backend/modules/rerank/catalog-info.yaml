@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: rerank-module
+  description: Handles reranking logic
+spec:
+  system: ai-backend
+  type: service
+  owner: development
+  lifecycle: experimental
+  providesApis:
+    - rerank-api

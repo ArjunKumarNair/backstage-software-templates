@@ -1,0 +1,19 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "data-prep-module API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/data-prep": {
+            "post": {
+                "summary": "Normalises text and splits into chunks",
+                "responses": {
+                    "200": {
+                        "description": "Returns text in chunks"
+                    }
+                }
+            }
+        }
+    }
+}

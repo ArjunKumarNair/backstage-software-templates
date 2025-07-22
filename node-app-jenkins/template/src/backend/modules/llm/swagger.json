@@ -1,0 +1,19 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "embedding-module API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/embedding": {
+            "post": {
+                "summary": "Generates embeddings",
+                "responses": {
+                    "200": {
+                        "description": "Returns embeddings"
+                    }
+                }
+            }
+        }
+    }
+}

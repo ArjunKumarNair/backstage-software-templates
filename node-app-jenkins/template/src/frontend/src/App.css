@@ -79,3 +79,21 @@ border-color: #999;
     transform: rotate(360deg);
   }
 }
+
+.rag-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+textarea {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.answer-box {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-left: 4px solid orange;
+  margin-top: 1rem;
+}

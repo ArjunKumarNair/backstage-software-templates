@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: data-prep-module
+  description: Handles data preparation logic, such as chunking
+spec:
+  type: service
+  owner: development
+  system: ai-backend
+  lifecycle: experimental
+  providesApis:
+    - data-prep-api

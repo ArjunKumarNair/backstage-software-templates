@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: vectordb-api
+  description: Vector DB API
+spec:
+  type: openapi
+  lifecycle: production
+  owner: development
+  system: ai-backend
+  definition:
+    $text: ./swagger.json

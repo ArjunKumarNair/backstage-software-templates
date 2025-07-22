@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: data-prep-api
+  description: Normalises text and splits into chunks
+spec:
+  type: openapi
+  lifecycle: production
+  owner: development
+  system: ai-backend
+  definition:
+    $text: ./swagger.json

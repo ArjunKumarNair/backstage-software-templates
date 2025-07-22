@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   name: ${{values.app_name}}-api
-  description: Retrieve artist details
+  description: APIs of ${{values.app_name}} 
 spec:
   type: openapi
   lifecycle: production

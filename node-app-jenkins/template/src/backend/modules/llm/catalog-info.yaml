@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: llm-module
+  description: Handles llm logic
+spec:
+  system: ai-backend
+  type: service
+  owner: development
+  lifecycle: experimental
+  providesApis:
+    - llm-api

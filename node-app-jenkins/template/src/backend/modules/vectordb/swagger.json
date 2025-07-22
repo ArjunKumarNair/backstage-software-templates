@@ -1,0 +1,31 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Vector DB API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/vectordb/upsert": {
+            "post": {
+                "summary": "Upserts vectors in vectorDB",
+                "responses": {
+                    "200": {
+                        "description": "Returns a success message after upserting vectors"
+                    }
+                }
+            }
+        },
+        "/vectordb/query": {
+            "post": {
+                "summary": "Queries vectors from vectorDB",
+                "responses": {
+                    "200": {
+                        "description": "Returns similar vectors from vectorDB"
+                    }
+                }
+            }
+        }
+
+    }
+    
+}
