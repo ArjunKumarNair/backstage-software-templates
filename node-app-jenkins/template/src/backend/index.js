@@ -66,6 +66,14 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/api', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
 app.listen(port, () => {
     console.log(`Backend running from http://localhost:${port}`)
 });
