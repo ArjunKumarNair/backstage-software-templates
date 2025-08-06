@@ -1,0 +1,113 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "End-to-End RAG Pipeline API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/embedChunks": {
+            "post": {
+                "summary": "Embed Chunks",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Chunks to embed",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "chunks": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "chunks"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Embeddings of chunks",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "embeddings": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/embedQuery": {
+            "post": {
+                "summary": "Embed Query",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Query to embed",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "query": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "query"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Embedding of query",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "embedding": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "summary": "Health Check",
+                "responses": {
+                    "200": {
+                        "description": "Service status",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

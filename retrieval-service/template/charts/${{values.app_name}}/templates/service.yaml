@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "retrieval-svc.fullname" . }}
+  labels:
+    {{- include "retrieval-svc.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 3024
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "retrieval-svc.selectorLabels" . | nindent 4 }}

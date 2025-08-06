@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{values.app_name}}
+  description: Microservice for ${{values.app_name}}
+  annotations:
+    github.com/project-slug: arjun-mindsprint-udemy/${{values.app_name}}
+    backstage.io/techdocs-ref: dir:.
+    jenkins.io/job-full-name: node-app-test-folder/arjun-mindsprint-udemy-repos/${{values.app_name}}
+    grafana/dashboard-selector: "(tags @> 'my-service' || tags @> 'my-service-slo') && tags @> 'generated'"
+    prometheus.io/alert: all
+    prometheus.io/rule: sum(increase(http_request_total[5m])), memUsage|component,node_memory_active_bytes|instance,sum by (instance) (node_cpu_seconds_total)
+spec:
+  type: service
+  owner: development
+  lifecycle: experimental
+  providesApis:
+    - ${{values.app_name}}-api

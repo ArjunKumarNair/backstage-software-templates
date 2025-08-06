@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vectordb-svc.fullname" . }}
+  labels:
+    {{- include "vectordb-svc.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 3023
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "vectordb-svc.selectorLabels" . | nindent 4 }}

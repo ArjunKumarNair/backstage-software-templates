@@ -1,73 +1,279 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Sample Node.js API",
+        "title": "End-to-End RAG Pipeline API",
         "version": "1.0.0"
     },
     "paths": {
         "/data-prep": {
-            "get": {
-                "summary": "Data Preparation API",
+            "post": {
+                "summary": "Data Preparation",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Text to split into chunks",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "text"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns chunks of text."
+                        "description": "Chunks of text",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "chunks": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
         "/embedChunks": {
-            "get": {
-                "summary": "Chunk Embedding API",
+            "post": {
+                "summary": "Embed Chunks",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Chunks to embed",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "chunks": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "chunks"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns embeddings of chunks of text."
+                        "description": "Embeddings of chunks",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "embeddings": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
         "/embedQuery": {
-            "get": {
-                "summary": "Query Embedding API",
+            "post": {
+                "summary": "Embed Query",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Query to embed",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "query": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "query"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns embeddings of query."
+                        "description": "Embedding of query",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "embedding": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
         "/upsert": {
-            "get": {
-                "summary": "Upsert API",
+            "post": {
+                "summary": "Upsert Documents",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Documents to upsert",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "docs": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "docs"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns success after upserting text."
+                        "description": "Upsert result",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-                "/query": {
-            "get": {
-                "summary": "Query API",
+        "/query": {
+            "post": {
+                "summary": "Query Similar Chunks",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Query string",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "query": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "query"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns similar chunks of text based on a query."
+                        "description": "Similar chunks of text",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "textList": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-                        "/llm": {
-            "get": {
-                "summary": "LLM API",
+        "/llm": {
+            "post": {
+                "summary": "LLM Answer Generation",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Chunks and question for LLM",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "chunks": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "question": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "chunks",
+                                "question"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Returns response from LLM based on query and context."
+                        "description": "LLM answer",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "answer": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
                     }
                 }
             }
         },
         "/health": {
             "get": {
-                "summary": "Health Check"
+                "summary": "Health Check",
+                "responses": {
+                    "200": {
+                        "description": "Service status",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
