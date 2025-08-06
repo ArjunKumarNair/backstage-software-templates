@@ -61,12 +61,19 @@ spec:
         protectDefaultBranch: false
         repoVisibility: public
 
-    - id: register
-      name: Register
+    - id: register-component
+      name: Register Component in Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml"
+
+    - id: register-api
+      name: Register API in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: "/openapi.yaml"
 
   output:
     links:
