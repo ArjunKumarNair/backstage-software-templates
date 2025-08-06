@@ -50,6 +50,7 @@ spec:
         values:
           app_name: ${{parameters.component_id}}
           app_env: ${{parameters.environment}}
+          model_provider: ${{parameters.model_provider}}
 
     - id: publish
       name: Publish

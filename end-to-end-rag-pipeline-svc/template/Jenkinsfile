@@ -13,6 +13,7 @@ pipeline {
         ENABLE_SONARQUBE = 'false'
         SONAR_TOKEN = credentials('SONAR_TOKEN_ARJUN')
         BUILD_TIME = "${new Date().format('yyyy-MM-dd\'T\'HH:mm:ss')}"
+        MODEL_PROVIDER = '${{ values.model_provider }}'
     }
 
     stages {
@@ -126,7 +127,7 @@ pipeline {
                     def app_env = env.APP_ENV
                     withCredentials([string(credentialsId: 'OPENAI_API_KEY_ARJUN', variable: 'OPENAI_API_KEY')]) {
                     bat """
-                        wsl helm upgrade --install ${app_name} ./charts/${app_name} -n ${app_env} --create-namespace --set image.tag=${commitId} --set env.openaiApiKey=%OPENAI_API_KEY%
+                        wsl helm upgrade --install ${app_name} ./charts/${app_name} -n ${app_env} --create-namespace --set image.tag=${commitId} --set env.openaiApiKey=%OPENAI_API_KEY% --set env.modelProvider=%MODEL_PROVIDER%
                     """
                 }
             }

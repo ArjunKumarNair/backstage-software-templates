@@ -5,6 +5,7 @@ image:
   tag: ${{values.app_name}}-latest
 env:
   openaiApiKey: ""
+  modelProvider: ""
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
