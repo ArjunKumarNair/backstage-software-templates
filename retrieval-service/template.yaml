@@ -32,7 +32,7 @@ spec:
           description: Top number of similar chunks to retreive (typically 3, odd number)
         metric:
           title: Metric
-          type: enum
+          type: string
           description: Similarity metric to use
           enum:
             - dot
