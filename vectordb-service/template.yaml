@@ -26,13 +26,22 @@ spec:
           enum:
             - dev
             - prod
-        model_provider:
-          title: Model Provider
+        pgvector_url:
+          title: Your Postgres URL
           type: string
-          description: Preferred Model Provider
+          description: Follows this format- 'postgresql://{your_username}:{your_password}@localhost:5432/{your_db}'
+        redis_url:
+          title: Your Redis URL
+          type: string
+          description: Follows this format- 'redis://localhost:6379'
+        db_type:
+          title: Preferred Vector DB
+          type: string
+          description: Preferred Vector DB
           enum:
-            - OpenAI
-            - Claude
+            - pgvector
+            - redis
+            - array
 
   steps:
     - id: fetch-base

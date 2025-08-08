@@ -52,6 +52,12 @@ spec:
               value:  {{ .Values.env.openaiApiKey | quote }}
             - name: MODEL_PROVIDER
               value: {{ .Values.env.modelProvider | quote }}
+            - name: PGVECTOR_URL
+              value: {{ .Values.env.pgVectorUrl | quote }}
+            - name: REDIS_URL
+              value: {{ .Values.env.redisUrl | quote }}
+            - name: DB_TYPE
+              value: {{ .Values.env.dbType | quote }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}

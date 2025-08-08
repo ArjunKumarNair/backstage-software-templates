@@ -6,6 +6,12 @@ image:
 env:
   openaiApiKey: ""
   modelProvider: ""
+  pgVectorUrl: ""
+  redisUrl: ""
+  dbType: ""
+
+
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
