@@ -26,20 +26,18 @@ spec:
           enum:
             - dev
             - prod
-        model_provider:
-          title: Model Provider
-          type: string
-          description: Preferred Model Provider
+        topK:
+          title: Top k to retrieve
+          type: number
+          description: Top number of similar chunks to retreive (typically 3, odd number)
+        metric:
+          title: Metric
+          type: enum
+          description: Similarity metric to use
           enum:
-            - OpenAI
-            - Claude
-        vector_db:
-          title: Vector Database
-          type: string
-          description: Preferred Vector DB
-          enum:
-            - Pinecone
-            - FAISS
+            - dot
+            - euclidean
+            - cosine
 
   steps:
     - id: fetch-base

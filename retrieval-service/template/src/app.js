@@ -10,19 +10,19 @@ async function embedQueryRemote(query) {
 }
 
 // Calls the vectorDB service
-async function querySimilarRemote(embedding) {
+async function querySimilarRemote(embedding, topK, metric) {
     const response = await fetch('http://vectordb-svc:3023/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ embedding })
+        body: JSON.stringify({ embedding, topK, metric })
     });
     const data = await response.json();
     return data.textList;
 }
 
-async function retrieveRelevantDocs(query) {
+async function retrieveRelevantDocs(query, topK, metric) {
     const [embedding] = await embedQueryRemote([query]);
-    const topDocs = await querySimilarRemote(embedding);
+    const topDocs = await querySimilarRemote(embedding, topK, metric);
     return topDocs;
     // return embedding
  }

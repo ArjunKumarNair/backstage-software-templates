@@ -8,7 +8,7 @@ app.use(express.json())
 
 app.post('/', async (req, res) => {
     const {query} = req.body;
-    const results = await retrieveRelevantDocs(query);
+    const results = await retrieveRelevantDocs(query, '${{ values.topK }}', '${{ values.metric }}');
     res.json({ results });
 });
 
