@@ -33,13 +33,6 @@ spec:
           enum:
             - OpenAI
             - Claude
-        vector_db:
-          title: Vector Database
-          type: string
-          description: Preferred Vector DB
-          enum:
-            - Pinecone
-            - FAISS
 
   steps:
     - id: fetch-base
