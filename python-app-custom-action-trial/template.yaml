@@ -1,0 +1,56 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: python-app-custom-action-trial
+  title: Python App for custom action trial
+  description: Python App for custom action trial
+spec:
+  owner: development
+  type: service
+
+  parameters:
+    - title: Fill in some steps
+      required:
+        - component_id
+        - environment
+      properties:
+        component_id:
+          title: Component name
+          type: string
+          description: Provide a component (microservice) name
+          pattern: '^([a-zA-Z][a-zA-Z0-9]*)(-[a-zA-Z0-9]+)*$'
+        environment:
+          title: Environment
+          type: string
+          description: The environment where this component will be deployed
+          enum:
+            - dev
+            - prod
+
+  steps:
+    - id: fetch-script
+      name: Fetch Python Script
+      action: fetch:plain:file
+      input:
+        url: ./hello.py
+        targetPath: hello.py
+   
+    - id: execute-python
+      name: Execute python script
+      action: custom:execute-python
+      input:
+        script: hello.py
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        description: This is ${{ parameters.component_id }}
+        repoUrl: github.com?owner=arjun-mindsprint-udemy&repo=${{parameters.component_id}}
+        protectDefaultBranch: false
+        repoVisibility: public
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
